@@ -177,6 +177,13 @@
             gap: 5px;
             padding: 0;
             transition: all 150ms ease;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .menu-toggle.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .menu-toggle:hover {
@@ -435,6 +442,7 @@
             function openDrawer() {
                 drawer.classList.add('open');
                 overlay.classList.add('show');
+                toggle.classList.add('hidden');
                 toggle.setAttribute('aria-expanded', 'true');
                 overlay.setAttribute('aria-hidden', 'false');
             }
@@ -442,6 +450,7 @@
             function closeDrawer() {
                 drawer.classList.remove('open');
                 overlay.classList.remove('show');
+                toggle.classList.remove('hidden');
                 toggle.setAttribute('aria-expanded', 'false');
                 overlay.setAttribute('aria-hidden', 'true');
             }
