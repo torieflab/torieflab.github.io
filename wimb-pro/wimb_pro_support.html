@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIMB Pro - 지원</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        
+        .contact-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .contact-info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 5px;
+        }
+        
+        .contact-info a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .app-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: #667eea;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        
+        .app-details h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .app-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .app-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .app-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Side drawer menu */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 48px;
+            height: 48px;
+            border: none;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 0;
+            transition: all 150ms ease;
+        }
+
+        .menu-toggle:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-toggle:active {
+            transform: translateY(0);
+        }
+
+        .menu-bar {
+            width: 24px;
+            height: 3px;
+            background: #667eea;
+            border-radius: 2px;
+            transition: all 150ms ease;
+        }
+
+        .menu-toggle:hover .menu-bar {
+            background: #5568d3;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 200ms ease;
+            z-index: 999;
+        }
+
+        .drawer-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            background: #ffffff;
+            transform: translateX(-105%);
+            transition: transform 200ms ease;
+            z-index: 1000;
+            overflow: auto;
+            padding: 16px;
+            box-shadow: 20px 0 40px rgba(0,0,0,0.15);
+        }
+
+        .side-drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .drawer-title {
+            font-weight: 700;
+            color: #111827;
+            font-size: 20px;
+        }
+
+        .drawer-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f3f4f6;
+            color: #6b7280;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 22px;
+            line-height: 1;
+            transition: all 120ms ease;
+        }
+
+        .drawer-close:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .drawer-section {
+            margin-bottom: 24px;
+        }
+
+        .drawer-section:not(:first-of-type) {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 16px;
+        }
+
+        .drawer-section-title {
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .drawer-link {
+            display: block;
+            padding: 10px 12px;
+            margin: 6px 0;
+            border-radius: 8px;
+            color: #374151;
+            text-decoration: none;
+            background: transparent;
+            transition: all 120ms ease;
+            font-size: 14px;
+        }
+
+        .drawer-link:hover {
+            background: #eef2ff;
+            color: #667eea;
+            padding-left: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .side-drawer {
+                width: 260px;
+            }
+            .menu-toggle {
+                top: 12px;
+                left: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+    <aside class="side-drawer" id="sideDrawer" aria-label="서비스 메뉴">
+        <div class="drawer-header">
+            <div class="drawer-title">메뉴</div>
+            <button type="button" class="drawer-close" id="drawerClose" aria-label="메뉴 닫기">&times;</button>
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-section-title">Cashflow (Casim)</div>
+            <a href="../casim/casim_support.html" class="drawer-link">지원</a>
+            <a href="../casim/casim_privacy_policy.html" class="drawer-link">개인정보처리방침</a>
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-section-title">Remodeling (RemoPlanner)</div>
+            <a href="../remo-planner/remo-planner_support.html" class="drawer-link">지원</a>
+            <a href="../remo-planner/remo-planner_privacy_policy.html" class="drawer-link">개인정보처리방침</a>
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-section-title">Dreamity</div>
+            <a href="../dreamity/dreamity_support.html" class="drawer-link">지원</a>
+            <a href="../dreamity/dreamity_privacy_policy.html" class="drawer-link">개인정보처리방침</a>
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-section-title">WIMBCheck</div>
+            <a href="../wimb-check/wimb_support.html" class="drawer-link">지원</a>
+            <a href="../wimb-check/wimb_privacy_policy.html" class="drawer-link">개인정보처리방침</a>
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-section-title">WIMB Pro</div>
+            <a href="wimb_pro_support.html" class="drawer-link">지원</a>
+            <a href="wimb_pro_privacy_policy.html" class="drawer-link">개인정보처리방침</a>
+        </div>
+    </aside>
+
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="메뉴 열기" aria-controls="sideDrawer" aria-expanded="false">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+    </button>
+
+
+    <div class="container">
+        <div class="header">
+            <h1>WIMB Pro</h1>
+            <p>일정·체크리스트 앱</p>
+        </div>
+        
+        <div class="content">
+            <div class="app-info">
+                <div class="app-icon">W</div>
+                <div class="app-details">
+                    <h3>WIMB Pro</h3>
+                    <p>일정 관리 및 체크리스트 | iOS/Android</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>📱 앱 소개</h2>
+                <p>WIMB Pro는 일정 관리와 체크리스트를 한곳에서 관리할 수 있는 모바일 앱입니다.</p>
+                <p><strong>• 일정 생성 및 관리</strong></p>
+                <p><strong>• 체크리스트·준비물 관리</strong></p>
+                <p><strong>• 회원 가입 후 데이터 동기화</strong></p>
+                <p><strong>• 통계 및 알림 기능</strong></p>
+                <p><strong>• 사용자 친화적 인터페이스</strong></p>
+            </div>
+            
+            <div class="section">
+                <h2>❓ 자주 묻는 질문</h2>
+                <p><strong>Q: 앱이 제대로 작동하지 않아요.</strong></p>
+                <p>A: 앱을 완전히 종료한 후 다시 실행해보세요. 문제가 계속되면 기기 재시작을 시도해보세요.</p>
+                
+                <p><strong>Q: 로그인이 안 돼요.</strong></p>
+                <p>A: 이메일·비밀번호를 확인해보시고, 비밀번호 재설정이 필요하면 로그인 화면의 안내를 따라주세요.</p>
+                
+                <p><strong>Q: 데이터가 동기화되지 않아요.</strong></p>
+                <p>A: 인터넷 연결을 확인해주세요. 회원으로 로그인한 상태에서만 일정·체크리스트가 서버와 동기화됩니다.</p>
+                
+                <p><strong>Q: 회원 탈퇴는 어떻게 하나요?</strong></p>
+                <p>A: 앱 내 설정 > 마이페이지에서 회원 탈퇴를 진행할 수 있습니다.</p>
+                
+                <p><strong>Q: 새로운 기능이 추가될 예정인가요?</strong></p>
+                <p>A: 사용자 피드백을 바탕으로 지속적으로 개선하고 있습니다.</p>
+            </div>
+            
+            <div class="section">
+                <h2>🐛 버그 신고</h2>
+                <p>앱에서 문제를 발견하셨나요? 아래 연락처로 자세한 내용을 알려주세요:</p>
+                <p><strong>• 문제가 발생한 상황</strong></p>
+                <p><strong>• 기기 정보 (모델명, iOS/Android 버전)</strong></p>
+                <p><strong>• 앱 버전</strong></p>
+                <p><strong>• 스크린샷 (가능한 경우)</strong></p>
+            </div>
+            
+            <div class="contact-info">
+                <h3>📧 지원 연락처</h3>
+                <p><strong>이메일:</strong> <a href="mailto:torieflab@gmail.com">torieflab@gmail.com</a></p>
+                <p><strong>응답 시간:</strong> 영업일 기준 1-2일</p>
+                <p><strong>지원 언어:</strong> 한국어, 영어</p>
+            </div>
+            
+            <div class="section">
+                <h2>🔒 개인정보 보호</h2>
+                <p>WIMB Pro는 개인정보보호법에 따라 이용자의 개인정보를 보호합니다. 수집·이용하는 정보와 보유 기간 등은 앱 내 개인정보처리방침에서 확인하실 수 있습니다.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 WIMB Pro. All rights reserved.</p>
+            <p>Made with ❤️ for better productivity</p>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var toggle = document.getElementById('menuToggle');
+            var drawer = document.getElementById('sideDrawer');
+            var overlay = document.getElementById('drawerOverlay');
+            var closeBtn = document.getElementById('drawerClose');
+
+            if (!toggle || !drawer || !overlay) return;
+
+            function openDrawer() {
+                drawer.classList.add('open');
+                overlay.classList.add('show');
+                toggle.setAttribute('aria-expanded', 'true');
+                overlay.setAttribute('aria-hidden', 'false');
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('show');
+                toggle.setAttribute('aria-expanded', 'false');
+                overlay.setAttribute('aria-hidden', 'true');
+            }
+
+            toggle.addEventListener('click', function () {
+                if (drawer.classList.contains('open')) {
+                    closeDrawer();
+                } else {
+                    openDrawer();
+                }
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeDrawer);
+            }
+
+            overlay.addEventListener('click', closeDrawer);
+
+            var links = drawer.querySelectorAll('a');
+            links.forEach(function (a) {
+                a.addEventListener('click', closeDrawer);
+            });
+
+            window.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        })();
+    </script>
+</body>
+</html>
