@@ -1,0 +1,9 @@
+{
+  "name": "torieflab.github.io",
+  "private": true,
+  "description": "정적 GitHub Pages 사이트(HTML). 빌드 단계 없음.",
+  "scripts": {
+    "build": "node -e \"console.log('No build: static HTML only.');\"",
+    "dev": "npx --yes serve . -l 3000"
+  }
+}
